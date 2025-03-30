@@ -33,19 +33,22 @@ const userSchema = new mongoose.Schema(
 		},
 		contactNumber: {
 			type: String,
-			required: false,
-			unique: true,
+			index: {
+				unique: true,
+				partialFilterExpression: {
+					contactNumber: { $exists: true, $ne: null },
+				},
+			},
 		},
 		role: {
 			type: String,
 			enum: ["User", "Captain"],
 			default: "User",
 		},
-
 	},
 	{
 		timestamps: true,
-		discriminatorKey: "role", 
+		discriminatorKey: "role",
 	}
 );
 

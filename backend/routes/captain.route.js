@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { registerAsCaptain,becomeACaptain } from "../controlers/captain.controller";
-import { authMiddleware } from "../middleware/auth.middleware";
+import { registerAsCaptain,becomeACaptain } from "../controlers/captain.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const captainRouter = new Router(); 
 
-captainRouter.post("/captains/register",authMiddleware, registerAsCaptain);
-captainRouter.post("/captains/become-captain",authMiddleware, becomeACaptain);
+captainRouter.post("/register",authMiddleware, registerAsCaptain);
+captainRouter.post("/become-captain",authMiddleware, becomeACaptain);
 
 export default captainRouter;
 

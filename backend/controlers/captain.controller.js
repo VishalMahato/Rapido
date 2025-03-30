@@ -1,8 +1,8 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Captain from "../models/captain.model";
-import User from "../models/user.model";
+import Captain from "../models/captain.model.js";
+import User from "../models/user.model.js";
 
 const registerAsCaptainSchema = z.object({
 	firstName: z.string().min(2),

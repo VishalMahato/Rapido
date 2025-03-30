@@ -30,15 +30,21 @@ const loginUserSchema = z.object({
 const registerUser = async (req, res) => {
 	try {
 		// console.log(req.body);
-		registerUserSchema.parse(req.body);
+		// registerUserSchema.parse(req.body);
 		const { firstName, lastName, userName, email, password, contactNumber } =
 			req.body;
-		const existingUserWithSameContact = await User.findOne({ contactNumber });
-		if (existingUserWithSameContact) {
-			return res
-				.status(400)
-				.json({ message: "user with this contact already exists." });
+
+		
+		if(contactNumber){
+			const existingUserWithSameContact = await User.findOne({ contactNumber });
+			if (existingUserWithSameContact) {
+				return res
+					.status(400)
+					.json({ message: "user with this contact already exists." });
+			}
 		}
+		
+
 		const existingUserWithSameEmail = await User.findOne({ email });
 		if (existingUserWithSameEmail) {
 			return res
@@ -77,7 +83,7 @@ const registerUser = async (req, res) => {
 
 		res.cookie("token", token, {
 			httpOnly: true,
-			secure: true,
+			// secure: true,
 			sameSite: "none",
 			maxAge: 3600000, // 1 hour
 		});
@@ -136,6 +142,21 @@ const loginUser = async (req, res) => {
 	}
 };
 
+const logoutUser = async (req, res) => {
+	try {
+	  res.clearCookie("token", {
+		httpOnly: true,
+		secure: true,
+		sameSite: "none",
+	  });
+  
+	  return res.status(200).json({ message: "Logged out successfully" });
+	} catch (error) {
+	  console.error("Error during logout:", error);
+	  return res.status(500).json({ message: "Internal Server Error" });
+	}
+  };
+  
 
 const verifyToken = async (token) => {
     try {
@@ -148,4 +169,4 @@ const verifyToken = async (token) => {
 }
 
 
-export { registerUser,loginUser,verifyToken };
+export { registerUser,loginUser,verifyToken,logoutUser };
